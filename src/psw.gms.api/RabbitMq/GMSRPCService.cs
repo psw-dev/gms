@@ -64,7 +64,10 @@ public class GMSRPCService : RPCServer, IHostedService, IDisposable
     }
     protected Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        return Task.Run(() => { this.Start(MessageQueues.GMSRPCQueue); });
+        return Task.Run(() =>
+        {
+            // this.Start(MessageQueues.GMSRPCQueue); 
+        });
     }
 
     #endregion

@@ -72,7 +72,10 @@ public class GMSQueueWorker : AsyncWorker, IHostedService
     }
     protected Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        return Task.Run(() => { this.Start(MessageQueues.GMSTask); });
+        return Task.Run(() => 
+        { 
+            // this.Start(MessageQueues.GMSTask); 
+        });
     }
 
     /// <summary>
