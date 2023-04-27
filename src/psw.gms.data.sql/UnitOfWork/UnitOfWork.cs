@@ -57,13 +57,13 @@ namespace PSW.GMS.Data.Sql
         {
             _eventBus = evBus;
             _configuration = configuration;
-            _connection = new SqlConnection(_configuration.GetConnectionString("ConnectionString"));
+            _connection = new SqlConnection(_configuration.GetConnectionString("GMSConnectionString"));
 
         }
         public UnitOfWork(IConfiguration configuration)
         {
             _configuration = configuration;
-            _connection = new SqlConnection(_configuration.GetConnectionString("ConnectionString"));
+            _connection = new SqlConnection(_configuration.GetConnectionString("GMSConnectionString"));
         }
         public UnitOfWork()
         {
@@ -83,7 +83,7 @@ namespace PSW.GMS.Data.Sql
         {
             get
             {
-                if (_connection == null) _connection = new SqlConnection(_configuration.GetConnectionString("ConnectionString"));
+                if (_connection == null) _connection = new SqlConnection(_configuration.GetConnectionString("GMSConnectionString"));
 
                 return _connection;
             }
