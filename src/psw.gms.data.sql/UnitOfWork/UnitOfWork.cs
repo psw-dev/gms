@@ -22,6 +22,10 @@ namespace PSW.GMS.Data.Sql
 
     public class UnitOfWork : IUnitOfWork
     {
+        #region Private Properties GMS
+        private IGuaranteeRepository _guaranteeRepository;
+        private IGuaranteeTransactionHistoryRepository _guaranteeTransactionHistoryRepository;
+        #endregion
 
         #region Private Properties SHRD
 
@@ -29,6 +33,11 @@ namespace PSW.GMS.Data.Sql
 
         #region Private Properties SHRD Views
 
+        #endregion
+
+        #region Public Properties GMS
+        public IGuaranteeRepository GuaranteeRepository => _guaranteeRepository ?? (_guaranteeRepository = new GuaranteeRepository(_connection));
+        public IGuaranteeTransactionHistoryRepository GuaranteeTransactionHistoryRepository => _guaranteeTransactionHistoryRepository ?? (_guaranteeTransactionHistoryRepository = new GuaranteeTransactionHistoryRepository(_connection));
         #endregion
 
         #region Public Properties SHRD
@@ -48,13 +57,13 @@ namespace PSW.GMS.Data.Sql
         {
             _eventBus = evBus;
             _configuration = configuration;
-            _connection = new SqlConnection(_configuration.GetConnectionString("ConnectionString"));
+            _connection = new SqlConnection(_configuration.GetConnectionString("GMSConnectionString"));
 
         }
         public UnitOfWork(IConfiguration configuration)
         {
             _configuration = configuration;
-            _connection = new SqlConnection(_configuration.GetConnectionString("ConnectionString"));
+            _connection = new SqlConnection(_configuration.GetConnectionString("GMSConnectionString"));
         }
         public UnitOfWork()
         {
@@ -74,7 +83,7 @@ namespace PSW.GMS.Data.Sql
         {
             get
             {
-                if (_connection == null) _connection = new SqlConnection(_configuration.GetConnectionString("ConnectionString"));
+                if (_connection == null) _connection = new SqlConnection(_configuration.GetConnectionString("GMSConnectionString"));
 
                 return _connection;
             }
