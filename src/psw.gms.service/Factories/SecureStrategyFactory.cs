@@ -2,8 +2,6 @@ using PSW.GMS.Service.Command;
 using PSW.GMS.Data;
 using PSW.GMS.Service.Strategies.Calculator;
 
-using PSW.GMS.Common.Constants;
-
 namespace PSW.GMS.Service.Strategies
 {
     public class SecureStrategyFactory : IStrategyFactory
@@ -36,7 +34,8 @@ namespace PSW.GMS.Service.Strategies
                 case "5": return new DoubleCalculatorAddStrategy(request);
                 case "6": return new DoubleCalculatorSubtractStrategy(request);
                 case "7": return new DoubleCalculatorMultiplyStrategy(request);
-                case "8": return new DoubleCalculatorDivideStrategy(request);                
+                case "8": return new DoubleCalculatorDivideStrategy(request);
+                case "2301": return new SaveGuaranteeDocumentStrategy(request);
                 
                 default: return new InvalidStrategy(request);
             }

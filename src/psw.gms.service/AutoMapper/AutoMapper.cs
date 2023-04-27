@@ -13,7 +13,7 @@ namespace PSW.GMS.Service.Mapper
 
         public ObjectMapper()
         {
-            // ConfigureMappings();
+            ConfigureMappings();
         }
 
         public IMapper GetMapper()
@@ -21,26 +21,23 @@ namespace PSW.GMS.Service.Mapper
             return _mapper;
         }
 
-        // public void ConfigureMappings()
-        // {
-        //     try
-        //     {
-        //         // Place All Mappings Here
-        //         var config = new MapperConfiguration(cfg =>
-        //         {
-        //             //cfg.CreateMap<CountryWithDialingCodes, GetAllCountryCodesResponseDTO>();
-        //             // cfg.CreateMap<Country, GetAllCountriesResponseDTO>();
-        //             // cfg.CreateMap<PCTCode, GetHSCodeListResponseDTO>();
-        //             //cfg.CreateMap<TransportMeans, GetMeanOfTransportResponseDTO>();
-        //             cfg.CreateMap<AgencyBusinessRegistration, GetCustomsRegistrationListResponseDTO>();
-        //         });
-        //         _mapper = config.CreateMapper();
-        //     }
-        //     catch
-        //     {
-        //         throw;
-        //     }
-        // }
+        public void ConfigureMappings()
+        {
+            try
+            {
+                // Place All Mappings Here
+                var config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<SaveGuaranteeDocumentRequestDTO, Guarantee>();
+                    cfg.CreateMap<Guarantee, SaveGuaranteeDocumentResponseDTO>();
+                });
+                _mapper = config.CreateMapper();
+            }
+            catch
+            {
+                throw;
+            }
+        }
 
     }
 }

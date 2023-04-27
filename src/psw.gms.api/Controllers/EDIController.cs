@@ -2,9 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using PSW.GMS.Api.ApiCommand;
 using PSW.GMS.Service;
 using PSW.GMS.Data;
-using Microsoft.AspNetCore.Authorization;
 using PSW.Common.Crypto;
-using PSW.GMS.Data.Entities;
 using PSW.GMS.Service.Strategies;
 using PSW.GMS.Service.Factories;
 using PSW.GMS.Common.Pagination;
@@ -14,7 +12,8 @@ using PSW.Lib.Logs;
 using System.Text.Json;
 using System.Security.Cryptography;
 // using PSW.GMS.Api.IPCLogging;
-using PSW.GMS.Common.Constants;
+using Microsoft.AspNetCore.Http;
+using psw.common.Extensions;
 
 namespace PSW.GMS.Api.Controllers
 {
@@ -33,12 +32,14 @@ namespace PSW.GMS.Api.Controllers
 
         #region Constructors
 
-        public EDIController(IGmsSecureService secureService, IGmsOpenService openService, IUnitOfWork uow, ICryptoAlgorithm cryptoAlgorithm)
+        public EDIController(IGmsSecureService secureService, IGmsOpenService openService, IUnitOfWork uow, IHttpContextAccessor httpContextAccessor, ICryptoAlgorithm cryptoAlgorithm)
         {
             SecureService = secureService;
             SecureService.UnitOfWork = uow;
             SecureService.StrategyFactory = new SecureStrategyFactory(uow);
             SecureService.CryptoAlgorithm = cryptoAlgorithm;
+            httpContextAccessor.HttpContext.Request.Headers.TryGetValue("LoggedInUserRoleID", out var userRoleId);
+            SecureService.LoggedInUserRoleId = cryptoAlgorithm.Decrypt(userRoleId).ToIntOrDefault();
 
             OpenService = openService;
             OpenService.UnitOfWork = uow;
@@ -51,7 +52,6 @@ namespace PSW.GMS.Api.Controllers
         #region End Points 
 
         [HttpPost("secure")]
-        // [Authorize("authGMSPolicy")]
         public ActionResult<EDIResponse> SecureRequest(EDIRequest ediRequest)
         {
 
@@ -92,6 +92,7 @@ namespace PSW.GMS.Api.Controllers
                     {
                         methodId = ediRequest.methodId,
                         data = ediRequest.data,
+                        LoggedInUserRoleID = SecureService.LoggedInUserRoleId,
                         CurrentUser = HttpContext.User,
                         UserClaims = HttpContext.User.Claims,
                         pagination = ediRequest.pagination,

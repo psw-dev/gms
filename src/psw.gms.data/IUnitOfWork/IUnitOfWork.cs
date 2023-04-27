@@ -19,6 +19,11 @@ namespace PSW.GMS.Data
         #region SHRD Repositories
         #endregion
 
+        #region Private Properties GMS
+        IGuaranteeRepository GuaranteeRepository { get; }
+        IGuaranteeTransactionHistoryRepository GuaranteeTransactionHistoryRepository { get; }
+        #endregion
+
         #region SHRD View Repositories
         #endregion
 
