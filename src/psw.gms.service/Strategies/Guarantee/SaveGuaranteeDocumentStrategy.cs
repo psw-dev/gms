@@ -33,8 +33,7 @@ namespace PSW.GMS.Service.Strategies
                 var gurEntity = MapElements();
 
                 var guaranteeBLL = new GuaranteeBLL(Command.UnitOfWork);
-                string responseMessage = "";
-                int ret = guaranteeBLL.Create(ref gurEntity, ref responseMessage);
+                int ret = guaranteeBLL.Create(ref gurEntity, out var responseMessage);
                 if (ret != 0)
                 {
                     return BadRequestReply(responseMessage);

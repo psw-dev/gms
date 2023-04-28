@@ -21,7 +21,7 @@ namespace PSW.GMS.Service.BusinessLogicLayer
             this.BLLName = GetType().Name;
         }
 
-        public int validate(Guarantee gurEntity, ref string responseMessage)
+        public int validate(Guarantee gurEntity, out string responseMessage)
         {
             var guarantee = UnitOfWork.GuaranteeRepository
             .Where(new { GuaranteeNumber = gurEntity.GuaranteeNumber, SoftDelete = false })
@@ -47,14 +47,15 @@ namespace PSW.GMS.Service.BusinessLogicLayer
                 responseMessage = "Invalid Issue date!";
                 return -1;
             }
+            responseMessage = "";
             return 0;
         }
 
-        public int Create(ref Guarantee gurEntity, ref string responseMessage)
+        public int Create(ref Guarantee gurEntity, out string responseMessage)
         {
             try
             {
-                if (validate(gurEntity, ref responseMessage) != 0)
+                if (validate(gurEntity, out responseMessage) != 0)
                 {
                     return -1;
                 }
@@ -69,9 +70,10 @@ namespace PSW.GMS.Service.BusinessLogicLayer
 
                 Log.Debug("|{0}| Inserting Guarantee {@Guarantee} in database", BLLName, gurEntity);
                 var gurId = UnitOfWork.GuaranteeRepository.Add(gurEntity);
-                responseMessage = "Guarantee inserted successfully";
 
                 UnitOfWork.Commit();
+
+                responseMessage = "Guarantee inserted successfully!";
                 gurEntity.ID = gurId;
                 return 0;
             }
@@ -82,13 +84,15 @@ namespace PSW.GMS.Service.BusinessLogicLayer
             }
         }
 
-        public int Delete(long ID, ref string responseMessage)
+        public int Delete(long ID, out string responseMessage)
         {
+            responseMessage = "";
             return 0;
         }
 
-        public int Update(Guarantee gurEntity, ref string responseMessage)
+        public int Update(Guarantee gurEntity, out string responseMessage)
         {
+            responseMessage = "";
             return 0;
         }
 
