@@ -14,6 +14,7 @@ using System.Security.Cryptography;
 // using PSW.GMS.Api.IPCLogging;
 using Microsoft.AspNetCore.Http;
 using psw.common.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PSW.GMS.Api.Controllers
 {
@@ -52,6 +53,7 @@ namespace PSW.GMS.Api.Controllers
         #region End Points 
 
         [HttpPost("secure")]
+        [Authorize("authorizedUserPolicy")]
         public ActionResult<EDIResponse> SecureRequest(EDIRequest ediRequest)
         {
 

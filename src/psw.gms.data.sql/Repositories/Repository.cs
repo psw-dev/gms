@@ -367,7 +367,6 @@ namespace PSW.GMS.Data.Sql.Repositories
                                         transaction: _transaction).ToList();
         }
 
-
         public virtual int Update(Entity entity)
         {
 

@@ -1,7 +1,6 @@
 using AutoMapper;
 using PSW.GMS.Data.Entities;
 using PSW.GMS.Service.DTO;
-// using PSW.GMS.Service.DTO.CustomsRegistration.GetCustomsRegistrationList;
 
 
 namespace PSW.GMS.Service.Mapper
@@ -30,6 +29,10 @@ namespace PSW.GMS.Service.Mapper
                 {
                     cfg.CreateMap<SaveGuaranteeDocumentRequestDTO, Guarantee>();
                     cfg.CreateMap<Guarantee, SaveGuaranteeDocumentResponseDTO>();
+                    cfg.CreateMap<Guarantee, GetGuaranteeResponseDTO>();
+                    cfg.CreateMap<UpdateGuaranteeTransactionRequestDTO, GuaranteeTransactionHistory>();
+                    cfg.CreateMap<GuaranteeTransactionHistory, UpdateGuaranteeTransactionResponseDTO>();
+                    cfg.CreateMap<GuaranteeTransactionHistory, GetGuaranteeHistoryResponseDTO>();
                 });
                 _mapper = config.CreateMapper();
             }
