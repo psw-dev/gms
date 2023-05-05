@@ -176,7 +176,7 @@ namespace PSW.GMS.Service.BusinessLogicLayer
         public int Update(Guarantee gurEntity, out string responseMessage)
         {
             var gur = UnitOfWork.GuaranteeRepository.Update(gurEntity);
-            Log.Debug("|{0}| Updated Guarantee with Balance Amount {1} {@Guarantee} in database", BLLName, gur);
+            Log.Debug("|{0}| Updated Guarantee with Balance Amount {1} in database", BLLName, gurEntity.BalanceAmount);
             responseMessage = "Guarantee Balance Amount Updated";
             return 0;
         }
