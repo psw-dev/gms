@@ -15,12 +15,6 @@ namespace PSW.GMS.Service.ModelValidators
             .WithName("roleCode")
             .WithMessage("'{PropertyName}' should not be null.");
 
-            RuleFor(x => x.TraderNTN)
-            .NotEmpty()
-            .NotNull()
-            .WithName("traderNTN")
-            .WithMessage("'{PropertyName}' should not be null.");
-
         }
     }
 }
