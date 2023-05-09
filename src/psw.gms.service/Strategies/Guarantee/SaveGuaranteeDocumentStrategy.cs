@@ -12,8 +12,6 @@ namespace PSW.GMS.Service.Strategies
 {
     public class SaveGuaranteeDocumentStrategy : ApiStrategy<SaveGuaranteeDocumentRequestDTO, SaveGuaranteeDocumentResponseDTO>
     {
-        private string role;
-
         public SaveGuaranteeDocumentStrategy(CommandRequest request) : base(request)
         {
             this.Reply = new CommandReply();
@@ -28,13 +26,11 @@ namespace PSW.GMS.Service.Strategies
                 var currentRole = StrategyHelper.GetCurrentUserRole(Command.UserClaims, RequestDTO.RoleCode);
                 if (currentRole == null)
                     return BadRequestReply("Invalid user role");
-                role = currentRole.RoleCode;
-
+                
                 var gurEntity = MapElements();
 
                 var guaranteeBLL = new GuaranteeBLL(Command.UnitOfWork);
-                string responseMessage = "";
-                int ret = guaranteeBLL.Create(ref gurEntity, ref responseMessage);
+                int ret = guaranteeBLL.Create(RequestDTO.RoleCode, ref gurEntity, out var responseMessage);
                 if (ret != 0)
                 {
                     return BadRequestReply(responseMessage);
@@ -60,10 +56,10 @@ namespace PSW.GMS.Service.Strategies
             // Not null columns of GUR
             GUR.GuaranteeTypeID = GuaranteeType.Bank_Guarantee;
             GUR.GuaranteeStatusID = GuaranteeStatus.Submitted;
-            if (role == RoleCode.CUSTOM_AGENT)
+            if (RequestDTO.RoleCode == RoleCode.CUSTOM_AGENT)
                 MapCustomsAgentParams(ref GUR);
 
-            else if (role == RoleCode.TRADER)
+            else if (RequestDTO.RoleCode == RoleCode.TRADER)
                 MapTraderParams(ref GUR);
 
             GUR.BalanceAmount = GUR.TotalAmount;
@@ -72,24 +68,24 @@ namespace PSW.GMS.Service.Strategies
             GUR.UpdatedOn = DateTime.Now;
             GUR.CreatedBy = Command.LoggedInUserRoleID;
             GUR.UpdatedBy = Command.LoggedInUserRoleID;
-            GUR.TraderRoleID = RequestDTO.TraderRoleID;
-            GUR.AgentRoleID = RequestDTO.AgentRoleID;
             
             return GUR;
         }
         
-        private void MapCustomsAgentParams(ref PSW.GMS.Data.Entities.Guarantee gurEntity)
+        private void MapCustomsAgentParams(ref Guarantee gurEntity)
         {
             gurEntity.AgentSubscriptionID = Command.SubscriptionId;
+            gurEntity.AgentRoleID = Command.LoggedInUserRoleID;
+            gurEntity.AgentParentCollectorateCode = Command.CryptoAlgorithm.Decrypt(RequestDTO.AgentParentCollectorateCode);
 
-            // Agent is filing Guarantee on behalf of trader which is consignor in export case
+            // Agent is creating Guarantee on behalf of trader
             gurEntity.TraderSubscriptionID = RequestDTO.TraderSubscriptionID;
-
         }
 
-        private void MapTraderParams(ref PSW.GMS.Data.Entities.Guarantee gurEntity)
+        private void MapTraderParams(ref Guarantee gurEntity)
         {
             gurEntity.TraderSubscriptionID = Command.SubscriptionId;
+            gurEntity.TraderRoleID = Command.LoggedInUserRoleID;
         }
     }
 }

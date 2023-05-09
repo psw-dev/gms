@@ -15,10 +15,11 @@ namespace PSW.GMS.Data.Entities
 		private long _attachedToDocumentID;
 		private string _attachedToDocumentNumber;
 		private string _attachedToDocumentTypeCode;
-        private decimal _consumedAmount;
+        private decimal? _consumedAmount;
 		private int _guaranteeTransactionStatusID;
-        private DateTime _approvedOn;
-        private DateTime _rejectedOn;
+        private DateTime? _approvedOn;
+        private DateTime? _rejectedOn;
+		private bool _softDelete;
         private DateTime _createdOn;
         private int _createdBy;
         private DateTime _updatedOn;
@@ -33,10 +34,11 @@ namespace PSW.GMS.Data.Entities
 		public long AttachedToDocumentID { get { return _attachedToDocumentID; } set { _attachedToDocumentID = value;  }}
 		public string AttachedToDocumentNumber { get { return _attachedToDocumentNumber; } set { _attachedToDocumentNumber = value;  }}
 		public string AttachedToDocumentTypeCode { get { return _attachedToDocumentTypeCode; } set { _attachedToDocumentTypeCode = value;  }}
-		public decimal ConsumedAmount { get { return _consumedAmount; } set { _consumedAmount = value;  }}
+		public decimal? ConsumedAmount { get { return _consumedAmount; } set { _consumedAmount = value;  }}
 		public int GuaranteeTransactionStatusID { get { return _guaranteeTransactionStatusID; } set { _guaranteeTransactionStatusID = value;  }}
-		public DateTime ApprovedOn { get { return _approvedOn; } set { _approvedOn = value;  }}
-		public DateTime RejectedOn { get { return _rejectedOn; } set { _rejectedOn = value;  }}
+		public DateTime? ApprovedOn { get { return _approvedOn; } set { _approvedOn = value;  }}
+		public DateTime? RejectedOn { get { return _rejectedOn; } set { _rejectedOn = value;  }}
+        public bool SoftDelete { get { return _softDelete; } set { _softDelete = value; } }
 		public DateTime CreatedOn { get { return _createdOn; } set { _createdOn = value; } }
         public int CreatedBy { get { return _createdBy; } set { _createdBy = value; } }
         public DateTime UpdatedOn { get { return _updatedOn; } set { _updatedOn = value; } }
@@ -63,6 +65,7 @@ namespace PSW.GMS.Data.Entities
 				{"GuaranteeTransactionStatusID", GuaranteeTransactionStatusID},
 				{"ApprovedOn", ApprovedOn},
 				{"RejectedOn", RejectedOn},
+                {"SoftDelete", SoftDelete},
                 {"CreatedOn", CreatedOn},
                 {"CreatedBy", CreatedBy},
                 {"UpdatedOn", UpdatedOn},
@@ -82,6 +85,7 @@ namespace PSW.GMS.Data.Entities
                 GuaranteeTransactionStatusID,
                 ApprovedOn,
                 RejectedOn,
+                SoftDelete,
 				CreatedOn,
 				CreatedBy,
 				UpdatedOn,

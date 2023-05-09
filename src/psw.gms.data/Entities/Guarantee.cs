@@ -15,9 +15,9 @@ namespace PSW.GMS.Data.Entities
 		private string _traderNTN;
 		private int _traderRoleID;
 		private int _traderSubscriptionID;
-		private int _agentSubscriptionID;
+		private int? _agentSubscriptionID;
 		private string _agentNTN;
-		private int _agentRoleID;
+		private int? _agentRoleID;
 		private string _agentParentCollectorateCode;
 		private string _guaranteeNumber;
         private decimal _totalAmount;
@@ -43,9 +43,9 @@ namespace PSW.GMS.Data.Entities
 		public string TraderNTN { get { return _traderNTN; } set { _traderNTN = value;  }}
 		public int TraderRoleID { get { return _traderRoleID; } set { _traderRoleID = value;  }}
 		public int TraderSubscriptionID { get { return _traderSubscriptionID; } set { _traderSubscriptionID = value;  }}
-		public int AgentSubscriptionID { get { return _agentSubscriptionID; } set { _agentSubscriptionID = value;  }}
+		public int? AgentSubscriptionID { get { return _agentSubscriptionID; } set { _agentSubscriptionID = value;  }}
 		public string AgentNTN { get { return _agentNTN; } set { _agentNTN = value;  }}
-		public int AgentRoleID { get { return _agentRoleID; } set { _agentRoleID = value;  }}
+		public int? AgentRoleID { get { return _agentRoleID; } set { _agentRoleID = value;  }}
 		public string AgentParentCollectorateCode { get { return _agentParentCollectorateCode; } set { _agentParentCollectorateCode = value;  }}
 		public string GuaranteeNumber { get { return _guaranteeNumber; } set { _guaranteeNumber = value;  }}
 		public decimal TotalAmount { get { return _totalAmount; } set { _totalAmount = value;  }}
