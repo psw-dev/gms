@@ -3,7 +3,7 @@ using PSW.GMS.Common.Pagination;
 
 namespace PSW.GMS.Api.ApiCommand
 {
-    public class APIRequest 
+    public class APIRequest
     {
         public string methodId { get; set; }
         public JsonElement data { get; set; }

@@ -31,7 +31,7 @@ namespace PSW.GMS.Service.BusinessLogicLayer
                 {
                     return -1;
                 }
-                
+
                 var gurNumber = GetDocNumber();
                 if (gurNumber != null)
                 {
@@ -79,7 +79,7 @@ namespace PSW.GMS.Service.BusinessLogicLayer
                     if (guaranteeList.Count() > 0)
                     {
                         var guarantee = guaranteeList.FirstOrDefault();
-                        
+
                         if (guarantee.TraderNTN != requestDTO.TraderNTN)
                         {
                             responseMessage = "TraderNTN does not match!";
@@ -209,7 +209,7 @@ namespace PSW.GMS.Service.BusinessLogicLayer
             }
             return string.Empty;
         }
-        
+
         public int UpdateGuaranteeTransaction(UpdateGuaranteeTransactionRequestDTO requestDTO, int subscriptionID, int userRoleId, int parentRoleID, int loggedInUserRoleId, string ParentCollectorateCode, ref GuaranteeTransactionHistory gurTransHistory, out string responseMessage)
         {
             try
@@ -302,7 +302,7 @@ namespace PSW.GMS.Service.BusinessLogicLayer
                     guarantee.UpdatedOn = gurTransHistory.UpdatedOn;
                     Update(guarantee, out responseMessage);
                 }
-                
+
                 UnitOfWork.Commit();
 
                 responseMessage = "Guarantee Transaction Added successfully!";
@@ -325,9 +325,9 @@ namespace PSW.GMS.Service.BusinessLogicLayer
                     transactions = new List<GuaranteeTransactionHistory>();
                     return -1;
                 }
-                
+
                 transactions = UnitOfWork.GuaranteeTransactionHistoryRepository.Where(new { GuaranteeID = requestDTO.GuaranteeID, SoftDelete = false });
-                
+
                 if (transactions.Count() > 0)
                     responseMessage = "Guarantee history fetched successfully!";
                 else

@@ -26,7 +26,7 @@ namespace PSW.GMS.Service.Strategies
                 var currentRole = StrategyHelper.GetCurrentUserRole(Command.UserClaims, RequestDTO.RoleCode);
                 if (currentRole == null || (currentRole.RoleCode != RoleCode.TRADER && currentRole.RoleCode != RoleCode.CUSTOM_AGENT))
                     return BadRequestReply("Invalid user role");
-                
+
                 var guaranteeBLL = new GuaranteeBLL(Command.UnitOfWork);
                 int ret = guaranteeBLL.Get(RequestDTO, Command.SubscriptionId, Command.LoggedInUserRoleID, Command.ParentUserRoleID, currentRole.UserRoleID, Command.CryptoAlgorithm.Decrypt(RequestDTO.AgentParentCollectorateCode), out var guaranteeList, out var responseMessage);
                 if (ret != 0)

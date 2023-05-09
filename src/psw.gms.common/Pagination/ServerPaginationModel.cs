@@ -1,6 +1,6 @@
 namespace PSW.GMS.Common.Pagination
 {
-    public class ServerPaginationModel 
+    public class ServerPaginationModel
     {
         public int offset { get; set; }
         public int Size { get; set; }

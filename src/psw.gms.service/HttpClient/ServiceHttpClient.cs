@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace PSW.GMS.Service
 {
-    public class ServiceHttpClient 
+    public class ServiceHttpClient
     {
         public string URL;
 

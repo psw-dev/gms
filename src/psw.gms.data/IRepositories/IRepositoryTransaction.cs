@@ -10,12 +10,12 @@ using PSW.GMS.Data.Entities;
 
 namespace PSW.GMS.Data.Repositories
 {
-	public interface IRepositoryTransaction
+    public interface IRepositoryTransaction
     {
-		#region Methods
+        #region Methods
 
         void SetTransaction(IDbTransaction transaction);
 
-		#endregion
+        #endregion
     }
 }

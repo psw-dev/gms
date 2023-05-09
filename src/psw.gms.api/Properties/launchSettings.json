@@ -26,7 +26,6 @@
         "ASPNETCORE_IDENTITY_SERVER_ISSUER": "http://localhost:4000",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "SEQ_URL": "http://localhost:5341",
-
         "ENCRYPTION_SALT": "randomsalt",
         "ENCRYPTION_PASSWORD": "pass"
       }

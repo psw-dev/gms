@@ -21,18 +21,18 @@ namespace PSW.GMS.Data.Entities
         #region public Properties
 
         public object PrimaryKey { get; set; }
-        
-		public string PrimaryKeyName { get; set; }
 
-		#endregion
+        public string PrimaryKeyName { get; set; }
+
+        #endregion
 
         #region PropertyChange
 
         #endregion
 
-		#region public Methods
+        #region public Methods
 
-		public virtual Dictionary<string, object> GetColumns()
+        public virtual Dictionary<string, object> GetColumns()
         {
             return null;
         }
@@ -41,6 +41,6 @@ namespace PSW.GMS.Data.Entities
         {
             return null;
         }
-		#endregion
+        #endregion
     }
 }

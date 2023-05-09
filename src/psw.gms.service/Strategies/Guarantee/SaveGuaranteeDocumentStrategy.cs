@@ -26,7 +26,7 @@ namespace PSW.GMS.Service.Strategies
                 var currentRole = StrategyHelper.GetCurrentUserRole(Command.UserClaims, RequestDTO.RoleCode);
                 if (currentRole == null)
                     return BadRequestReply("Invalid user role");
-                
+
                 var gurEntity = MapElements();
 
                 var guaranteeBLL = new GuaranteeBLL(Command.UnitOfWork);
@@ -68,10 +68,10 @@ namespace PSW.GMS.Service.Strategies
             GUR.UpdatedOn = DateTime.Now;
             GUR.CreatedBy = Command.LoggedInUserRoleID;
             GUR.UpdatedBy = Command.LoggedInUserRoleID;
-            
+
             return GUR;
         }
-        
+
         private void MapCustomsAgentParams(ref Guarantee gurEntity)
         {
             gurEntity.AgentSubscriptionID = Command.SubscriptionId;

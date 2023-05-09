@@ -41,7 +41,7 @@ namespace PSW.GMS.Data.Sql
         #endregion
 
         #region Public Properties SHRD
-        
+
         #endregion
 
         //EventBusXml to Send request to IRMS
