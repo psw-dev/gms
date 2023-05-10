@@ -1,11 +1,11 @@
+using System.Collections.Generic;
+using PSW.Lib.Logs;
+using PSW.GMS.Common.Constants;
+using PSW.GMS.Service.BusinessLogicLayer;
 using PSW.GMS.Service.Command;
 using PSW.GMS.Service.DTO;
 using PSW.GMS.Service.ModelValidators;
-using PSW.GMS.Service.BusinessLogicLayer;
-using PSW.Lib.Logs;
-using System.Collections.Generic;
 using PSW.GMS.Service.Helpers;
-using PSW.GMS.Common.Constants;
 
 namespace PSW.GMS.Service.Strategies
 {

@@ -1,11 +1,11 @@
 using System;
+using PSW.Lib.Logs;
+using PSW.GMS.Common.Constants;
+using PSW.GMS.Data.Entities;
+using PSW.GMS.Service.BusinessLogicLayer;
 using PSW.GMS.Service.Command;
 using PSW.GMS.Service.DTO;
 using PSW.GMS.Service.ModelValidators;
-using PSW.GMS.Common.Constants;
-using PSW.GMS.Service.BusinessLogicLayer;
-using PSW.GMS.Data.Entities;
-using PSW.Lib.Logs;
 using PSW.GMS.Service.Helpers;
 
 namespace PSW.GMS.Service.Strategies
@@ -30,7 +30,13 @@ namespace PSW.GMS.Service.Strategies
                 var gurEntity = MapElements();
 
                 var guaranteeBLL = new GuaranteeBLL(Command.UnitOfWork);
-                int ret = guaranteeBLL.Create(RequestDTO.RoleCode, ref gurEntity, out var responseMessage);
+                int ret = guaranteeBLL.validateCreateRequest(RequestDTO.RoleCode, gurEntity, out var responseMessage);
+                if (ret != 0)
+                {
+                    return BadRequestReply(responseMessage);
+                }
+
+                ret = guaranteeBLL.Create(ref gurEntity, out responseMessage);
                 if (ret != 0)
                 {
                     return BadRequestReply(responseMessage);
