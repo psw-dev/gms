@@ -43,7 +43,7 @@ namespace PSW.GMS.Data.Sql.Repositories
             {
                 _connection.Query(string.Format("ALTER SEQUENCE GURNumber RESTART WITH {0}", initValueForSequence),
                 transaction: _transaction);
-                
+
                 return GetCountForGURNumber();
             }
             catch (Exception ex)

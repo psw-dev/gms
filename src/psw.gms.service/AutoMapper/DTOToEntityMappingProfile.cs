@@ -12,7 +12,7 @@ namespace PSW.GMS.Service.AutoMapper
         public override string ProfileName
         {
             get { return "DTOToEntityMappings"; }
-        } 
+        }
         public DTOToEntityMappingProfile()
         {
             var _culture = new CultureInfo("en-Us");
@@ -20,7 +20,7 @@ namespace PSW.GMS.Service.AutoMapper
             //GetCityByCountryRequestDTO
             // CreateMap<GetCityByCountryRequestDTO, Country>()
             //     .ForMember(dest => dest.Code , opt => opt.MapFrom(src => src.CountryCode));
-            
+
             //GetImportPermitsResponseDTO
 
 

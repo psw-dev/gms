@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PSW.Lib.Logs;
 using PSW.GMS.Common.Constants;
 using PSW.GMS.Data;
 using PSW.GMS.Data.Entities;
 using PSW.GMS.Service.DTO;
-using PSW.Lib.Logs;
 
 namespace PSW.GMS.Service.BusinessLogicLayer
 {
@@ -23,20 +23,16 @@ namespace PSW.GMS.Service.BusinessLogicLayer
             this.BLLName = GetType().Name;
         }
 
-        public int Create(string roleCode, ref Guarantee gurEntity, out string responseMessage)
+        public int Create(ref Guarantee gurEntity, out string responseMessage)
         {
             try
             {
-                if (validateCreateGurRequest(roleCode, gurEntity, out responseMessage) != 0)
-                {
-                    return -1;
-                }
-                
                 var gurNumber = GetDocNumber();
                 if (gurNumber != null)
                 {
                     gurEntity.ReferenceNumber = gurNumber;
                 }
+
                 // Begin transaction
                 UnitOfWork.BeginTransaction();
 
@@ -79,7 +75,7 @@ namespace PSW.GMS.Service.BusinessLogicLayer
                     if (guaranteeList.Count() > 0)
                     {
                         var guarantee = guaranteeList.FirstOrDefault();
-                        
+
                         if (guarantee.TraderNTN != requestDTO.TraderNTN)
                         {
                             responseMessage = "TraderNTN does not match!";
@@ -209,86 +205,11 @@ namespace PSW.GMS.Service.BusinessLogicLayer
             }
             return string.Empty;
         }
-        
-        public int UpdateGuaranteeTransaction(UpdateGuaranteeTransactionRequestDTO requestDTO, int subscriptionID, int userRoleId, int parentRoleID, int loggedInUserRoleId, string ParentCollectorateCode, ref GuaranteeTransactionHistory gurTransHistory, out string responseMessage)
+
+        public int UpdateGuaranteeTransaction(UpdateGuaranteeTransactionRequestDTO requestDTO, ref GuaranteeTransactionHistory gurTransHistory, out string responseMessage)
         {
             try
             {
-                var guarantee = UnitOfWork.GuaranteeRepository
-                .Where(new { ID = requestDTO.GuaranteeID, SoftDelete = false })
-                .FirstOrDefault();
-
-                if (guarantee == null)
-                {
-                    responseMessage = "Guarantee Number does not exist!";
-                    return -1;
-                }
-                if (guarantee.TraderNTN != requestDTO.TraderNTN)
-                {
-                    responseMessage = "TraderNTN does not match!";
-                    return -1;
-                }
-
-                if (requestDTO.RoleCode == RoleCode.TRADER)
-                {
-                    if (guarantee.TraderSubscriptionID != subscriptionID)
-                    {
-                        responseMessage = "TraderSubscriptionID does not match!";
-                        return -1;
-                    }
-                    if (parentRoleID > 0 && loggedInUserRoleId > 0 && guarantee.TraderRoleID != userRoleId)
-                    {
-                        responseMessage = "TraderRoleID does not match!";
-                        return -1;
-                    }
-                }
-                else if (requestDTO.RoleCode == RoleCode.CUSTOM_AGENT)
-                {
-                    if (requestDTO.AgentParentCollectorateCode == null || requestDTO.AgentParentCollectorateCode == "")
-                    {
-                        responseMessage = "AgentParentCollectorateCode required!";
-                        return -1;
-                    }
-
-                    if (guarantee.AgentSubscriptionID != subscriptionID)
-                    {
-                        responseMessage = "AgentSubscriptionID does not match!";
-                        return -1;
-                    }
-                    if (guarantee.AgentParentCollectorateCode != ParentCollectorateCode)
-                    {
-                        responseMessage = "AgentParentCollectorateCode does not match!";
-                        return -1;
-                    }
-                    if (parentRoleID > 0 && loggedInUserRoleId > 0 && guarantee.AgentRoleID != userRoleId)
-                    {
-                        responseMessage = "AgentRoleID does not match!";
-                        return -1;
-                    }
-                }
-
-                if (requestDTO.GuaranteeTransactionStatusID == GuaranteeTransactionStatus.Approved)
-                {
-                    if (requestDTO.ConsumedAmount == null || requestDTO.ConsumedAmount <= 0)
-                    {
-                        responseMessage = "Consumed amount required for approval!";
-                        return -1;
-                    }
-                    if (requestDTO.ConsumedAmount > guarantee.BalanceAmount)
-                    {
-                        responseMessage = "Consumed amount exceeds Guarantee balance amount!";
-                        return -1;
-                    }
-                }
-                if (gurTransHistory.GuaranteeTransactionStatusID == GuaranteeTransactionStatus.Approved)
-                {
-                    gurTransHistory.ApprovedOn = DateTime.Now;
-                }
-                else
-                {
-                    gurTransHistory.RejectedOn = DateTime.Now;
-                }
-
                 // Begin transaction
                 UnitOfWork.BeginTransaction();
 
@@ -297,12 +218,15 @@ namespace PSW.GMS.Service.BusinessLogicLayer
 
                 if (gurTransId > 0 && gurTransHistory.GuaranteeTransactionStatusID == GuaranteeTransactionStatus.Approved)
                 {
+                    var guarantee = UnitOfWork.GuaranteeRepository
+                    .Where(new { ID = requestDTO.GuaranteeID, SoftDelete = false })
+                    .FirstOrDefault();
                     guarantee.BalanceAmount -= gurTransHistory.ConsumedAmount.Value;
                     guarantee.UpdatedBy = gurTransHistory.UpdatedBy;
                     guarantee.UpdatedOn = gurTransHistory.UpdatedOn;
                     Update(guarantee, out responseMessage);
                 }
-                
+
                 UnitOfWork.Commit();
 
                 responseMessage = "Guarantee Transaction Added successfully!";
@@ -316,18 +240,12 @@ namespace PSW.GMS.Service.BusinessLogicLayer
             }
         }
 
-        public int GetGuaranteeHistory(GetGuaranteeHistoryRequestDTO requestDTO, int subscriptionID, int userRoleId, int parentRoleID, int loggedInUserRoleId, string ParentCollectorateCode, out IEnumerable<Entity> transactions, out string responseMessage)
+        public int GetGuaranteeHistory(GetGuaranteeHistoryRequestDTO requestDTO, out IEnumerable<Entity> transactions, out string responseMessage)
         {
             try
             {
-                if (validateGetHistoryRequest(requestDTO, subscriptionID, userRoleId, parentRoleID, loggedInUserRoleId, ParentCollectorateCode, out responseMessage) != 0)
-                {
-                    transactions = new List<GuaranteeTransactionHistory>();
-                    return -1;
-                }
-                
                 transactions = UnitOfWork.GuaranteeTransactionHistoryRepository.Where(new { GuaranteeID = requestDTO.GuaranteeID, SoftDelete = false });
-                
+
                 if (transactions.Count() > 0)
                     responseMessage = "Guarantee history fetched successfully!";
                 else
@@ -342,7 +260,7 @@ namespace PSW.GMS.Service.BusinessLogicLayer
             }
         }
 
-        public int validateCreateGurRequest(string roleCode, Guarantee gurEntity, out string responseMessage)
+        public int validateCreateRequest(string roleCode, Guarantee gurEntity, out string responseMessage)
         {
             var guarantee = UnitOfWork.GuaranteeRepository
             .Where(new { GuaranteeNumber = gurEntity.GuaranteeNumber, SoftDelete = false })
@@ -378,6 +296,78 @@ namespace PSW.GMS.Service.BusinessLogicLayer
                 if (gurEntity.AgentParentCollectorateCode == null)
                 {
                     responseMessage = "AgentParentCollectorateCode required!";
+                    return -1;
+                }
+            }
+            responseMessage = "";
+            return 0;
+        }
+
+        public int validateUpdateTransactionRequest(UpdateGuaranteeTransactionRequestDTO requestDTO, int subscriptionID, int userRoleId, int parentRoleID, int loggedInUserRoleId, string ParentCollectorateCode, out string responseMessage)
+        {
+            var guarantee = UnitOfWork.GuaranteeRepository
+            .Where(new { ID = requestDTO.GuaranteeID, SoftDelete = false })
+            .FirstOrDefault();
+
+            if (guarantee == null)
+            {
+                responseMessage = "Guarantee Number does not exist!";
+                return -1;
+            }
+            if (guarantee.TraderNTN != requestDTO.TraderNTN)
+            {
+                responseMessage = "TraderNTN does not match!";
+                return -1;
+            }
+
+            if (requestDTO.RoleCode == RoleCode.TRADER)
+            {
+                if (guarantee.TraderSubscriptionID != subscriptionID)
+                {
+                    responseMessage = "TraderSubscriptionID does not match!";
+                    return -1;
+                }
+                if (parentRoleID > 0 && loggedInUserRoleId > 0 && guarantee.TraderRoleID != userRoleId)
+                {
+                    responseMessage = "TraderRoleID does not match!";
+                    return -1;
+                }
+            }
+            else if (requestDTO.RoleCode == RoleCode.CUSTOM_AGENT)
+            {
+                if (requestDTO.AgentParentCollectorateCode == null || requestDTO.AgentParentCollectorateCode == "")
+                {
+                    responseMessage = "AgentParentCollectorateCode required!";
+                    return -1;
+                }
+
+                if (guarantee.AgentSubscriptionID != subscriptionID)
+                {
+                    responseMessage = "AgentSubscriptionID does not match!";
+                    return -1;
+                }
+                if (guarantee.AgentParentCollectorateCode != ParentCollectorateCode)
+                {
+                    responseMessage = "AgentParentCollectorateCode does not match!";
+                    return -1;
+                }
+                if (parentRoleID > 0 && loggedInUserRoleId > 0 && guarantee.AgentRoleID != userRoleId)
+                {
+                    responseMessage = "AgentRoleID does not match!";
+                    return -1;
+                }
+            }
+
+            if (requestDTO.GuaranteeTransactionStatusID == GuaranteeTransactionStatus.Approved)
+            {
+                if (requestDTO.ConsumedAmount == null || requestDTO.ConsumedAmount <= 0)
+                {
+                    responseMessage = "Consumed amount required for approval!";
+                    return -1;
+                }
+                if (requestDTO.ConsumedAmount > guarantee.BalanceAmount)
+                {
+                    responseMessage = "Consumed amount exceeds Guarantee balance amount!";
                     return -1;
                 }
             }

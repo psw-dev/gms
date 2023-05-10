@@ -1,11 +1,11 @@
+using System.Collections.Generic;
+using PSW.Lib.Logs;
+using PSW.GMS.Common.Constants;
+using PSW.GMS.Service.BusinessLogicLayer;
 using PSW.GMS.Service.Command;
 using PSW.GMS.Service.DTO;
 using PSW.GMS.Service.ModelValidators;
-using PSW.GMS.Service.BusinessLogicLayer;
-using PSW.Lib.Logs;
-using System.Collections.Generic;
 using PSW.GMS.Service.Helpers;
-using PSW.GMS.Common.Constants;
 
 namespace PSW.GMS.Service.Strategies
 {
@@ -26,7 +26,7 @@ namespace PSW.GMS.Service.Strategies
                 var currentRole = StrategyHelper.GetCurrentUserRole(Command.UserClaims, RequestDTO.RoleCode);
                 if (currentRole == null || (currentRole.RoleCode != RoleCode.TRADER && currentRole.RoleCode != RoleCode.CUSTOM_AGENT))
                     return BadRequestReply("Invalid user role");
-                
+
                 var guaranteeBLL = new GuaranteeBLL(Command.UnitOfWork);
                 int ret = guaranteeBLL.Get(RequestDTO, Command.SubscriptionId, Command.LoggedInUserRoleID, Command.ParentUserRoleID, currentRole.UserRoleID, Command.CryptoAlgorithm.Decrypt(RequestDTO.AgentParentCollectorateCode), out var guaranteeList, out var responseMessage);
                 if (ret != 0)

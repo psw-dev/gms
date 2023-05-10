@@ -5,9 +5,9 @@ namespace PSW.GMS.Service.Test.Calculator
 {
     public class CalculatorTests
     {
-        private Calc calculator {get;}
+        private Calc calculator { get; }
 
-        //THis Constructor is called before tests
+        //This Constructor is called before tests
         public CalculatorTests()
         {
             calculator = new Calc();
@@ -20,7 +20,7 @@ namespace PSW.GMS.Service.Test.Calculator
             int a = 50, b = 50;
 
             // Act
-            var result = calculator.add(a,b);
+            var result = calculator.add(a, b);
 
             // Assert
             Assert.Equal(result, 100);
@@ -33,7 +33,7 @@ namespace PSW.GMS.Service.Test.Calculator
             int a = 51, b = 49;
 
             // Act
-            var result = calculator.subtract(a,b);
+            var result = calculator.subtract(a, b);
 
             // Assert
             Assert.Equal(result, 2);
@@ -46,7 +46,7 @@ namespace PSW.GMS.Service.Test.Calculator
             int a = 51, b = 49;
 
             // Act
-            var result = calculator.multiply(a,b);
+            var result = calculator.multiply(a, b);
 
             // Assert
             Assert.Equal(result, 2499);
@@ -59,7 +59,7 @@ namespace PSW.GMS.Service.Test.Calculator
             int a = 100, b = 50;
 
             // Act
-            var result = calculator.divide(a,b);
+            var result = calculator.divide(a, b);
 
             // Assert
             Assert.Equal(result, 2);
@@ -72,7 +72,7 @@ namespace PSW.GMS.Service.Test.Calculator
             double a = 55.4, b = 50.5;
 
             // Act
-            var result = calculator.add(a,b);
+            var result = calculator.add(a, b);
 
             // Assert
             Assert.Equal(result, 105.9);
@@ -85,7 +85,7 @@ namespace PSW.GMS.Service.Test.Calculator
             double a = 51.85, b = 49.35;
 
             // Act
-            var result = calculator.subtract(a,b);
+            var result = calculator.subtract(a, b);
 
             // Assert
             Assert.Equal(result, 2.5);
@@ -98,7 +98,7 @@ namespace PSW.GMS.Service.Test.Calculator
             double a = 50.5, b = 55.8;
 
             // Act
-            var result = calculator.multiply(a,b);
+            var result = calculator.multiply(a, b);
 
             // Assert
             Assert.Equal(result, 2817.9);
@@ -111,7 +111,7 @@ namespace PSW.GMS.Service.Test.Calculator
             double a = 27.5, b = 5;
 
             // Act
-            var result = calculator.divide(a,b);
+            var result = calculator.divide(a, b);
 
             // Assert
             Assert.Equal(result, 5.5);

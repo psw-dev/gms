@@ -39,7 +39,7 @@ namespace PSW.GMS.Service.Strategies
                 case "2302": return new GetGuaranteeStrategy(request);
                 case "2303": return new UpdateGuaranteeTransactionStrategy(request);
                 case "2304": return new GetGuaranteeHistoryStrategy(request);
-                
+
                 default: return new InvalidStrategy(request);
             }
         }

@@ -18,27 +18,27 @@ namespace PSW.GMS.Api.Controllers
     public class TestController
     {
 
-     
-        [HttpPost("secure")]   
-        public ActionResult<APIResponse> SecureRequest(APIRequest apiRequest) 
+
+        [HttpPost("secure")]
+        public ActionResult<APIResponse> SecureRequest(APIRequest apiRequest)
         {
             return new APIResponse();
-        } 
+        }
 
 
-        [HttpPost("open")]   
-        public ActionResult<object> OpenRequest(APIRequest apiRequest) 
+        [HttpPost("open")]
+        public ActionResult<object> OpenRequest(APIRequest apiRequest)
         {
-               return new APIResponse();
-        } 
+            return new APIResponse();
+        }
 
 
-        [HttpPost("test")]   
-        public string test(APIRequest apiRequest) 
+        [HttpPost("test")]
+        public string test(APIRequest apiRequest)
         {
-               return "Hello";
-        } 
+            return "Hello";
+        }
 
 
     }
-} 
+}

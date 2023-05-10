@@ -8,9 +8,9 @@ namespace PSW.GMS.Service.Strategies
 {
     public class Strategy
     {
-        public IMapper Mapper{get; protected set;}
-        public CommandReply Reply{get; protected set;}
-        public bool IsValidated {get; protected set;}
+        public IMapper Mapper { get; protected set; }
+        public CommandReply Reply { get; protected set; }
+        public bool IsValidated { get; protected set; }
         public bool IsWorkflowRequest { get; set; }
 
 
@@ -21,7 +21,7 @@ namespace PSW.GMS.Service.Strategies
         public Strategy(CommandRequest request)
         {
             this.Command = request;
-            this.IsValidated=false;
+            this.IsValidated = false;
             Mapper = new ObjectMapper().GetMapper();
         }
         public virtual CommandReply Execute()
@@ -30,7 +30,8 @@ namespace PSW.GMS.Service.Strategies
         }
 
         public string ValidationMessage { get; set; }
-        public virtual bool Validate(){            
+        public virtual bool Validate()
+        {
             return this.IsValidated;
         }
 
