@@ -52,11 +52,14 @@ namespace PSW.GMS.Service.BusinessLogicLayer
             }
         }
 
-        public int Get(GetGuaranteeRequestDTO requestDTO, int subscriptionID, int userRoleId, int parentRoleID, int loggedInUserRoleId, string ParentCollectorateCode, out IEnumerable<Guarantee> guaranteeList, out string responseMessage)
+        public int Get(GetGuaranteeRequestDTO requestDTO, int subscriptionID, int userRoleId
+        , int parentRoleID, int loggedInUserRoleId, string parentCollectorateCode
+        , out IEnumerable<Guarantee> guaranteeList, out string responseMessage)
         {
             try
             {
-                if (requestDTO.RoleCode == RoleCode.CUSTOM_AGENT && requestDTO.AgentParentCollectorateCode == null)
+                if (requestDTO.RoleCode == RoleCode.CUSTOM_AGENT
+                && requestDTO.AgentParentCollectorateCode == null)
                 {
                     responseMessage = "AgentParentCollectorateCode is required for Custom Agent!";
                     guaranteeList = new List<Guarantee>();
@@ -71,7 +74,8 @@ namespace PSW.GMS.Service.BusinessLogicLayer
 
                 if (requestDTO.ID > 0)
                 {
-                    guaranteeList = UnitOfWork.GuaranteeRepository.Where(new { ID = requestDTO.ID, SoftDelete = false });
+                    guaranteeList = UnitOfWork.GuaranteeRepository
+                    .Where(new { ID = requestDTO.ID, SoftDelete = false });
                     if (guaranteeList.Count() > 0)
                     {
                         var guarantee = guaranteeList.FirstOrDefault();
@@ -89,7 +93,8 @@ namespace PSW.GMS.Service.BusinessLogicLayer
                                 responseMessage = "TraderSubscriptionID does not match!";
                                 return -1;
                             }
-                            if (parentRoleID > 0 && loggedInUserRoleId > 0 && guarantee.TraderRoleID != userRoleId)
+                            if (parentRoleID > 0 && loggedInUserRoleId > 0
+                            && guarantee.TraderRoleID != userRoleId)
                             {
                                 responseMessage = "TraderRoleID does not match!";
                                 return -1;
@@ -102,12 +107,13 @@ namespace PSW.GMS.Service.BusinessLogicLayer
                                 responseMessage = "AgentSubscriptionID does not match!";
                                 return -1;
                             }
-                            if (guarantee.AgentParentCollectorateCode != ParentCollectorateCode)
+                            if (guarantee.AgentParentCollectorateCode != parentCollectorateCode)
                             {
                                 responseMessage = "ParentCollectorateCode does not match!";
                                 return -1;
                             }
-                            if (parentRoleID > 0 && loggedInUserRoleId > 0 && guarantee.AgentRoleID != userRoleId)
+                            if (parentRoleID > 0 && loggedInUserRoleId > 0
+                            && guarantee.AgentRoleID != userRoleId)
                             {
                                 responseMessage = "AgentRoleID does not match!";
                                 return -1;
@@ -121,11 +127,24 @@ namespace PSW.GMS.Service.BusinessLogicLayer
                     {
                         if (parentRoleID > 0 && loggedInUserRoleId > 0)
                         {
-                            guaranteeList = UnitOfWork.GuaranteeRepository.Where(new { TraderNTN = requestDTO.TraderNTN, TraderRoleID = userRoleId, TraderSubscriptionID = subscriptionID, SoftDelete = false });
+                            guaranteeList = UnitOfWork.GuaranteeRepository
+                            .Where(new
+                            {
+                                TraderNTN = requestDTO.TraderNTN,
+                                TraderRoleID = userRoleId,
+                                TraderSubscriptionID = subscriptionID,
+                                SoftDelete = false
+                            });
                         }
                         else
                         {
-                            guaranteeList = UnitOfWork.GuaranteeRepository.Where(new { TraderNTN = requestDTO.TraderNTN, TraderSubscriptionID = subscriptionID, SoftDelete = false });
+                            guaranteeList = UnitOfWork.GuaranteeRepository
+                            .Where(new
+                            {
+                                TraderNTN = requestDTO.TraderNTN,
+                                TraderSubscriptionID = subscriptionID,
+                                SoftDelete = false
+                            });
                         }
                     }
                     else
@@ -134,22 +153,50 @@ namespace PSW.GMS.Service.BusinessLogicLayer
                         {
                             if (requestDTO.TraderNTN == null)
                             {
-                                guaranteeList = UnitOfWork.GuaranteeRepository.Where(new { AgentSubscriptionID = subscriptionID, AgentParentCollectorateCode = ParentCollectorateCode, AgentRoleID = userRoleId, SoftDelete = false });
+                                guaranteeList = UnitOfWork.GuaranteeRepository
+                                .Where(new
+                                {
+                                    AgentSubscriptionID = subscriptionID,
+                                    AgentParentCollectorateCode = parentCollectorateCode,
+                                    AgentRoleID = userRoleId,
+                                    SoftDelete = false
+                                });
                             }
                             else
                             {
-                                guaranteeList = UnitOfWork.GuaranteeRepository.Where(new { TraderNTN = requestDTO.TraderNTN, AgentSubscriptionID = subscriptionID, AgentParentCollectorateCode = ParentCollectorateCode, AgentRoleID = userRoleId, SoftDelete = false });
+                                guaranteeList = UnitOfWork.GuaranteeRepository
+                                .Where(new
+                                {
+                                    TraderNTN = requestDTO.TraderNTN,
+                                    AgentSubscriptionID = subscriptionID,
+                                    AgentParentCollectorateCode = parentCollectorateCode,
+                                    AgentRoleID = userRoleId,
+                                    SoftDelete = false
+                                });
                             }
                         }
                         else
                         {
                             if (requestDTO.TraderNTN == null)
                             {
-                                guaranteeList = UnitOfWork.GuaranteeRepository.Where(new { AgentSubscriptionID = subscriptionID, AgentParentCollectorateCode = ParentCollectorateCode, SoftDelete = false });
+                                guaranteeList = UnitOfWork.GuaranteeRepository
+                                .Where(new
+                                {
+                                    AgentSubscriptionID = subscriptionID,
+                                    AgentParentCollectorateCode = parentCollectorateCode,
+                                    SoftDelete = false
+                                });
                             }
                             else
                             {
-                                guaranteeList = UnitOfWork.GuaranteeRepository.Where(new { TraderNTN = requestDTO.TraderNTN, AgentSubscriptionID = subscriptionID, AgentParentCollectorateCode = ParentCollectorateCode, SoftDelete = false });
+                                guaranteeList = UnitOfWork.GuaranteeRepository
+                                .Where(new
+                                {
+                                    TraderNTN = requestDTO.TraderNTN,
+                                    AgentSubscriptionID = subscriptionID,
+                                    AgentParentCollectorateCode = parentCollectorateCode,
+                                    SoftDelete = false
+                                });
                             }
                         }
                     }
@@ -173,7 +220,7 @@ namespace PSW.GMS.Service.BusinessLogicLayer
         {
             var gur = UnitOfWork.GuaranteeRepository.Update(gurEntity);
             Log.Debug("|{0}| Updated Guarantee with Balance Amount {1} in database", BLLName, gurEntity.BalanceAmount);
-            responseMessage = "Guarantee Balance Amount Updated";
+            responseMessage = "Guarantee Updated";
             return 0;
         }
 
@@ -206,7 +253,8 @@ namespace PSW.GMS.Service.BusinessLogicLayer
             return string.Empty;
         }
 
-        public int UpdateGuaranteeTransaction(UpdateGuaranteeTransactionRequestDTO requestDTO, ref GuaranteeTransactionHistory gurTransHistory, out string responseMessage)
+        public int UpdateGuaranteeTransaction(long guaranteeID
+        , ref GuaranteeTransactionHistory gurTransHistory, out string responseMessage)
         {
             try
             {
@@ -216,10 +264,11 @@ namespace PSW.GMS.Service.BusinessLogicLayer
                 Log.Debug("|{0}| Inserting GuaranteeTransactionHistory {@GuaranteeTransactionHistory} in database", BLLName, gurTransHistory);
                 int gurTransId = UnitOfWork.GuaranteeTransactionHistoryRepository.Add(gurTransHistory);
 
-                if (gurTransId > 0 && gurTransHistory.GuaranteeTransactionStatusID == GuaranteeTransactionStatus.Approved)
+                if (gurTransId > 0
+                && gurTransHistory.GuaranteeTransactionStatusID == GuaranteeTransactionStatus.Approved)
                 {
                     var guarantee = UnitOfWork.GuaranteeRepository
-                    .Where(new { ID = requestDTO.GuaranteeID, SoftDelete = false })
+                    .Where(new { ID = guaranteeID, SoftDelete = false })
                     .FirstOrDefault();
                     guarantee.BalanceAmount -= gurTransHistory.ConsumedAmount.Value;
                     guarantee.UpdatedBy = gurTransHistory.UpdatedBy;
@@ -240,11 +289,13 @@ namespace PSW.GMS.Service.BusinessLogicLayer
             }
         }
 
-        public int GetGuaranteeHistory(GetGuaranteeHistoryRequestDTO requestDTO, out IEnumerable<Entity> transactions, out string responseMessage)
+        public int GetGuaranteeHistory(long guaranteeID, out IEnumerable<Entity> transactions
+        , out string responseMessage)
         {
             try
             {
-                transactions = UnitOfWork.GuaranteeTransactionHistoryRepository.Where(new { GuaranteeID = requestDTO.GuaranteeID, SoftDelete = false });
+                transactions = UnitOfWork.GuaranteeTransactionHistoryRepository
+                .Where(new { GuaranteeID = guaranteeID, SoftDelete = false });
 
                 if (transactions.Count() > 0)
                     responseMessage = "Guarantee history fetched successfully!";
@@ -303,7 +354,9 @@ namespace PSW.GMS.Service.BusinessLogicLayer
             return 0;
         }
 
-        public int validateUpdateTransactionRequest(UpdateGuaranteeTransactionRequestDTO requestDTO, int subscriptionID, int userRoleId, int parentRoleID, int loggedInUserRoleId, string ParentCollectorateCode, out string responseMessage)
+        public int validateUpdateTransactionRequest(UpdateGuaranteeTransactionRequestDTO requestDTO
+        , int subscriptionID, int userRoleId, int parentRoleID, int loggedInUserRoleId
+        , string parentCollectorateCode, out string responseMessage)
         {
             var guarantee = UnitOfWork.GuaranteeRepository
             .Where(new { ID = requestDTO.GuaranteeID, SoftDelete = false })
@@ -335,7 +388,8 @@ namespace PSW.GMS.Service.BusinessLogicLayer
             }
             else if (requestDTO.RoleCode == RoleCode.CUSTOM_AGENT)
             {
-                if (requestDTO.AgentParentCollectorateCode == null || requestDTO.AgentParentCollectorateCode == "")
+                if (requestDTO.AgentParentCollectorateCode == null
+                || requestDTO.AgentParentCollectorateCode == "")
                 {
                     responseMessage = "AgentParentCollectorateCode required!";
                     return -1;
@@ -346,7 +400,7 @@ namespace PSW.GMS.Service.BusinessLogicLayer
                     responseMessage = "AgentSubscriptionID does not match!";
                     return -1;
                 }
-                if (guarantee.AgentParentCollectorateCode != ParentCollectorateCode)
+                if (guarantee.AgentParentCollectorateCode != parentCollectorateCode)
                 {
                     responseMessage = "AgentParentCollectorateCode does not match!";
                     return -1;
@@ -375,7 +429,9 @@ namespace PSW.GMS.Service.BusinessLogicLayer
             return 0;
         }
 
-        public int validateGetHistoryRequest(GetGuaranteeHistoryRequestDTO requestDTO, int subscriptionID, int userRoleId, int parentRoleID, int loggedInUserRoleId, string ParentCollectorateCode, out string responseMessage)
+        public int validateGetHistoryRequest(GetGuaranteeHistoryRequestDTO requestDTO, int subscriptionID
+        , int userRoleId, int parentRoleID, int loggedInUserRoleId, string parentCollectorateCode
+        , out string responseMessage)
         {
             var guarantee = UnitOfWork.GuaranteeRepository
             .Where(new { ID = requestDTO.GuaranteeID, SoftDelete = false })
@@ -407,7 +463,8 @@ namespace PSW.GMS.Service.BusinessLogicLayer
             }
             else if (requestDTO.RoleCode == RoleCode.CUSTOM_AGENT)
             {
-                if (requestDTO.AgentParentCollectorateCode == null || requestDTO.AgentParentCollectorateCode == "")
+                if (requestDTO.AgentParentCollectorateCode == null
+                || requestDTO.AgentParentCollectorateCode == "")
                 {
                     responseMessage = "AgentParentCollectorateCode required!";
                     return -1;
@@ -418,7 +475,7 @@ namespace PSW.GMS.Service.BusinessLogicLayer
                     responseMessage = "AgentSubscriptionID does not match!";
                     return -1;
                 }
-                if (guarantee.AgentParentCollectorateCode != ParentCollectorateCode)
+                if (guarantee.AgentParentCollectorateCode != parentCollectorateCode)
                 {
                     responseMessage = "ParentCollectorateCode does not match!";
                     return -1;

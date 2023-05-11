@@ -34,7 +34,7 @@ namespace PSW.GMS.Service.Strategies
                     return BadRequestReply(responseMessage);
                 }
 
-                ret = guaranteeBLL.GetGuaranteeHistory(RequestDTO, out var guaranteeHistory, out responseMessage);
+                ret = guaranteeBLL.GetGuaranteeHistory(RequestDTO.GuaranteeID, out var guaranteeHistory, out responseMessage);
                 if (ret != 0)
                 {
                     return BadRequestReply(responseMessage);

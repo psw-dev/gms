@@ -37,7 +37,7 @@ namespace PSW.GMS.Service.Strategies
                     return BadRequestReply(responseMessage);
                 }
 
-                ret = guaranteeBLL.UpdateGuaranteeTransaction(RequestDTO, ref gurTransHistoryEntity, out responseMessage);
+                ret = guaranteeBLL.UpdateGuaranteeTransaction(RequestDTO.GuaranteeID, ref gurTransHistoryEntity, out responseMessage);
                 if (ret != 0)
                 {
                     return BadRequestReply(responseMessage);
